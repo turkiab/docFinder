@@ -27,6 +27,14 @@
 .App-link {
   color: #61dafb;
 }
+.fileText {
+  
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+  }
+}
 
 @keyframes App-logo-spin {
   from {
