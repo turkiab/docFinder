@@ -13,7 +13,8 @@ export default class recherche extends Component {
             textMessage : '',
             words : ['9 octobre'],
             names : [],
-            deletedTags: []
+            deletedTags: [],
+            selected : []
         };
     }
 
@@ -25,70 +26,56 @@ export default class recherche extends Component {
 
   }
 
-  search = () => {
-    const url = 'http://localhost:8080/api/';
-    const url2 = 'https://doc-gre-backend-b3e988357648.herokuapp.com/api/';
-    axios.post(url,{ path : this.state.path}).then((result) => {
-        if(result?.data) {
-            if(typeof result?.data === 'string' || result?.data instanceof String) {
-                this.setState({textMessage : result?.data})
-            } else {
-                if(result?.data.length > 0) {
-                    console.log(result?.data);
-                    this.setState({files : result?.data});
-                }
-            }
-        }
-      });
-  }
-
-  onChangeText = (e) => {
-    this.setState({path : e.target.value});
-  }
-
-  onClickTextFile = (e) => {
-    window.open(`file:///${e.target?.innerHTML}`,"_blank");
-
-  }
-
   handleUpload = (event) => {
-    console.log(event.target.files[0])
     const files = Array.prototype.slice.call(event.target.files);
     this.setState({
       files,
-    },() => {
-      console.log(this.state.files);
     });
   };
 
   checkIfStringContainsAllElementsInArray = (string, array) => {
-    for (const element of array) {
-      if (!string.includes(element)) {
-        return false;
-      }
+    if(array.length > 0) {
+      for (const element of array) {
+        if (!string.includes(element)) {
+          return false;
+        }
+      } 
     }
     return true;
   };
 
-  showFile = async () => {
-    this.setState({names : []}, () => {
-      this.state.files.map((file,index) => {
-        // e.preventDefault()
-        console.log(file.fullPath);
-        const reader = new FileReader()
-        reader.onload = async (e) => { 
-          const text = (e.target.result)
-          const flag = this.checkIfStringContainsAllElementsInArray(text, this.state.words);
-          if(flag) {
-            this.setState({ names: [...this.state.names, file.name] },() => {
-              console.log(this.state.names)
-            })
-          }
-        };
-        reader.readAsText(file)
-      })
+  checkFiles = async (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const text = e.target.result;
+        const flag = this.checkIfStringContainsAllElementsInArray(
+          text,
+          this.state.words
+        );
+        if (flag) {
+          this.setState(
+            (prevState) => ({ names: [...prevState.names, file] }),
+            () => {
+              resolve(); // Resolve the promise when state update is done
+            }
+          );
+        } else {
+          resolve(); // Resolve even if not added to names array
+        }
+      };
+      reader.readAsText(file);
     });
-  }
+  };
+
+  showFile = async () => {
+    this.setState({ names: [], selected: [] }, async () => {
+      const promises = this.state.files.map((file) => this.checkFiles(file));
+      await Promise.all(promises);
+      console.log(this.state.names); // Names will contain files that match criteria
+    });
+  };
+
 
   addTags = (event) => {
     const tagUpper = event.target.value;
@@ -124,20 +111,39 @@ tagsMapRender = () => {
       </li>));
 }
 
+preview = (file) => {
+  this.setState(
+    (prevState) => ({ selected: [...prevState.selected, file.name] }),
+    () => {
+      console.log(this.state.selected)
+    }
+  );
+  window.open(URL.createObjectURL(file), '_blank');
+}
+
+
+
+
+
+
+documentList = () => {
+  return this.state.names.map((file, index) => 
+  <p key={index} className={ this.state.selected.includes(file.name) ? 'fileTextSelected' : 'fileText'} onClick={() => this.preview(file)}>{file.name}</p>)
+}
+
   render() {
     return (
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <div className="container">
                 <div className="row">
-                <label htmlFor="tags" className="form-label">Words</label>
+                    <input placeholder="press enter to add tags" type="text"
+                                className="inputtags" onKeyUp={this.addTags}/>
                     <div className="tags-input">
                         <ul id="tags">
                             {this.tagsMapRender()}
                         </ul>
                     </div>
-                    <input placeholder="press enter to add tags" type="text"
-                                onKeyUp={this.addTags}/>
                     <form>
                         <h3>Chose your files</h3>
                         <div className="form-group">
@@ -152,9 +158,8 @@ tagsMapRender = () => {
                     </form>
                     <div>
                             {   
-                                this.state.names.length ? this.state.names.map((name, index) => 
-                                <p key={index} className='fileText' >{name}</p>) : 
-                                <p>{this.state.textMessage}</p>
+                                this.state.names && this.state.names.length > 0 ? 
+                                this.documentList() : (<p>No Files</p>)
                             }
                     </div> 
                 </div>

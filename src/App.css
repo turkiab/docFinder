@@ -33,6 +33,7 @@
   padding: 0 8px;
   border: 1px solid rgb(214, 216, 218);
   border-radius: 6px;
+  margin: 15px;
 
   &:focus-within {
     border: 1px solid #0052cc;
@@ -58,6 +59,20 @@
   margin: 8px 0 0 0;
 }
 
+.tagi {
+  position: absolute;
+  bottom: 73%;
+  left: 90%;
+  background: red;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+
 .tag {
   width: auto;
   height: 32px;
@@ -72,20 +87,6 @@
   margin: 0 8px 8px 0;
   background: #0052cc;
   position: relative;
-
-  .tagi {
-    position: absolute;
-    bottom: 75%;
-    left: 60%;
-    background: red;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-  }
 
   .tag-title {
     margin-top: 3px;
@@ -110,12 +111,58 @@
   color: #61dafb;
 }
 .fileText {
-  
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline;
-    color: blue;
-  }
+  font-size: 17px;
+}
+
+.highlighted {
+  background-color: yellow;
+  font-weight: bold;
+}
+
+.myButton {
+  box-shadow: 0px 10px 14px -7px #276873;
+  background: linear-gradient(to bottom, #00bbff 5%, #3849ff 100%);
+  background-color: #00bbff;
+  border-radius: 4px;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 7px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #3d768a;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #3849ff 5%, #00bbff 100%);
+	background-color:#3849ff;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+.fileTextSelected {
+  font-size: 17px;
+  color: red;
+}
+
+.fileText:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+
+.inputtags {
+  width: 250px;
+  height: 35px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  padding-left: 10px;
+  transition: 0.3s;
 }
 
 @keyframes App-logo-spin {

@@ -1,7 +1,7 @@
 import logo from '../logo.svg';
 import '../App.css';
 import axios from "axios";
-import Recherche from '../components/Recherche';
+import RechercheFile from './RechercheFile';
 
 
 
@@ -9,7 +9,7 @@ import Recherche from '../components/Recherche';
 function App() {
   return (
     <div className="App">
-      <Recherche/>
+      <RechercheFile/>
     </div>
   );
 }
