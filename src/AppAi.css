@@ -1,0 +1,378 @@
+.App {
+    text-align: center;
+  }
+  
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .tags-input {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    min-height: 48px;
+    width: auto;
+    padding: 0 8px;
+    border: 1px solid rgb(214, 216, 218);
+    border-radius: 6px;
+    margin: 15px;
+  
+    &:focus-within {
+      border: 1px solid #0052cc;
+    }
+  
+    input {
+      flex: 1;
+      border: none;
+      height: 46px;
+      font-size: 14px;
+      padding: 4px 0 0 0;
+  
+      &:focus {
+        outline: transparent;
+      }
+    }
+  }
+  
+  #tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 8px 0 0 0;
+  }
+  
+  .tagi {
+    position: absolute;
+    bottom: 73%;
+    left: 90%;
+    background: red;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+  }
+  
+  .tag {
+    width: auto;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 0 8px;
+    font-size: 14px;
+    list-style: none;
+    border-radius: 6px;
+    margin: 0 8px 8px 0;
+    background: #0052cc;
+    position: relative;
+  
+    .tag-title {
+      margin-top: 3px;
+    }
+  
+    .tag-close-icon {
+      display: block;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      text-align: center;
+      font-size: 14px;
+      margin-left: 8px;
+      color: #0052cc;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+    }
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  .fileText {
+    font-size: 17px;
+  }
+  
+  .highlighted {
+    background-color: yellow;
+    font-weight: bold;
+  }
+  
+  .myButton {
+    box-shadow: 0px 10px 14px -7px #276873;
+    background: linear-gradient(to bottom, #00bbff 5%, #3849ff 100%);
+    background-color: #00bbff;
+    border-radius: 4px;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 7px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #3d768a;
+  }
+  .myButton:hover {
+      background:linear-gradient(to bottom, #3849ff 5%, #00bbff 100%);
+      background-color:#3849ff;
+  }
+  .myButton:active {
+      position:relative;
+      top:1px;
+  }
+  
+  .document-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .document-table th,
+  .document-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .document-table th {
+  
+  }
+  
+  .fileText {
+    cursor: pointer;
+    color: black;
+  }
+  
+  .fileTextSelected {
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .myButton {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  
+  
+  .fileTextSelected {
+    font-size: 17px;
+    color: red;
+  }
+  
+  .fileText:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+  }
+  
+  .inputtags {
+    width: 250px;
+    height: 35px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    padding-left: 10px;
+    transition: 0.3s;
+  }
+
+  /* Facebook-like design styles */
+
+.facebook-design {
+    background-color: #f0f2f5;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 100vh;
+  }
+  
+  .facebook-header {
+    background-color: #1877f2;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .facebook-logo {
+    width: 100px;
+    height: auto;
+  }
+  
+  .facebook-container {
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .facebook-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .facebook-document-list {
+    margin-top: 20px;
+  }
+
+  /* Fancy styles for the form */
+.fancy-form {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .fancy-heading {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .custom-file-upload i {
+    margin-right: 10px;
+  }
+  
+  #file-upload {
+    display: none;
+  }
+  
+  .fancy-upload-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .fancy-upload-button:hover {
+    background-color: #218838;
+  }
+
+  .popup {
+    position: fixed;
+    top: 5%;
+    left: 2%;
+    width: 95%;
+    padding: 10px;
+    background: linear-gradient(to right, #4CAF50, #45A049);
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 9999;
+    /* animation: fadeOut 10s ease-in-out forwards;*/
+    animation: slideInAndBounce 1s cubic-bezier(0.19, 1, 0.22, 1) forwards, fadeOut 10s ease-in-out 6s forwards;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 6px;
+  }
+
+  .red-popup {
+    position: fixed;
+    top: 5%;
+    left: 2%;
+    width: 95%;
+    padding: 10px;
+    background: linear-gradient(to right, #4CAF50, #45A049);
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 9999;
+    /* animation: fadeOut 10s ease-in-out forwards;*/
+    animation: slideInAndBounce 1s cubic-bezier(0.19, 1, 0.22, 1) forwards, fadeOut 10s ease-in-out 6s forwards;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 6px;
+    background: linear-gradient(to right, #FF5733, #D63917);
+  }
+  
+
+  @keyframes slideInAndBounce {
+    0% {
+      transform: translateY(100%);
+    }
+    60% {
+      transform: translateY(-10%);
+    }
+    80% {
+      transform: translateY(5%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .close-button {
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+
+  
+  
+  
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  

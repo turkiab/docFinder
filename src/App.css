@@ -143,6 +143,39 @@
 	top:1px;
 }
 
+.document-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.document-table th,
+.document-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.document-table th {
+
+}
+
+.fileText {
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.fileTextSelected {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.myButton {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+
 
 .fileTextSelected {
   font-size: 17px;

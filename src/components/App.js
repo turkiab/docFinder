@@ -1,15 +1,12 @@
-import logo from '../logo.svg';
 import '../App.css';
-import axios from "axios";
-import RechercheFile from './RechercheFile';
-
+import RechercheAI from './RechercheAi';
 
 
 
 function App() {
   return (
     <div className="App">
-      <RechercheFile/>
+      <RechercheAI/>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../App.css';
-import axios from "axios";
 
 export default class RechercheFile extends Component {
   constructor(props) {
@@ -113,7 +112,13 @@ export default class RechercheFile extends Component {
         }), () => {
         console.log(this.state.selected);
         });
+        console.log(file);
         window.open(URL.createObjectURL(file), '_blank');
+        const blob = new Blob([file], {type: 'application/xml'});
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = file.name + '.pdf';
+        link.click();
   };
 
   downloadFile = (file) => {
