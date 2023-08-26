@@ -1,5 +1,6 @@
 import '../App.css';
 import RechercheAI from './RechercheAi';
+import ChatbotApp from './ChatbotApp';
 
 
 
