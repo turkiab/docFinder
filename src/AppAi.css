@@ -186,7 +186,8 @@
   }
   
   .inputtags {
-    width: 250px;
+    width: 90%;
+    min-width: 90%;
     height: 35px;
     border-radius: 3px;
     border: 1px solid #ccc;

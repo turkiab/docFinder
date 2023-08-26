@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import '../AppAi.css';
 
-const apiKey = "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";
+const apiKey = process.env.REACT_APP_API_KEY;
 
 class RechercheFile extends Component {
   constructor(props) {
@@ -18,7 +18,8 @@ class RechercheFile extends Component {
       showPopup: false,
       showHiddenContent : false,
       loading : true,
-      fileSummarize : ''
+      fileSummarize : '',
+      question : 'Est-ce que le préjudice moral a été indemnisé, pourquoi et par quel montant ?'
     };
   }
 
@@ -114,13 +115,9 @@ class RechercheFile extends Component {
 
 // Modify the preview function to accept a callback function
 
-checkAi = async (file) => {
-    // Read the file's content
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const fileContent = e.target.result;
-
-      // Create the API request body
+/*checkAi = async (extractedText) => {
+    try {
+              // Create the API request body
       const apiBody = {
         "model": "gpt-3.5-turbo",
         "messages": [
@@ -130,7 +127,7 @@ checkAi = async (file) => {
           },
           {
             "role": "user",
-            "content": fileContent // Pass the file's content here
+            "content": extractedText // Pass the file's content here
           }
         ],
         "temperature": 0,
@@ -160,11 +157,141 @@ checkAi = async (file) => {
           // Set loading to false in case of an error
           this.setState({ loading: false });
         });
-    };
+    } catch (error) {
+        console.log(error);
+    }
+}*/
 
-    // Read the file as text
-    reader.readAsText(file);
-}
+checkAi = async (extractedText) => {
+    try {
+      // Split the extracted text into chunks to avoid exceeding the token limit
+      const chunkSize = 2000; // Adjust this based on your needs
+      const chunks = [];
+      for (let i = 0; i < extractedText.length; i += chunkSize) {
+        chunks.push(extractedText.slice(i, i + chunkSize));
+      }
+
+      // Initialize an array to store summaries for each chunk
+      const summaries = [];
+
+      // Process each chunk and generate summaries
+      for (const chunk of chunks) {
+        const apiBody = {
+          "model": "gpt-3.5-turbo",
+          "messages": [
+            {
+              "role": "system",
+              "content": "fais moi un résumé en une seule phrase très courte 1 ligne maximum à ce texte : "
+            },
+            {
+              "role": "user",
+              "content": chunk
+            }
+          ],
+          "temperature": 0,
+          "max_tokens": 200, // Adjust the token limit for each chunk
+        };
+
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: JSON.stringify(apiBody)
+        });
+
+        const data = await response.json();
+        const summary = data?.choices[0]?.message?.content;
+        summaries.push(summary);
+      }
+
+      // Combine summaries into a final result
+      const finalSummary = summaries.join(' ');
+
+          // Now, create a new summary of the finalSummary
+        const apiBodyForFinalSummary = {
+            "model": "gpt-3.5-turbo",
+            "messages": [
+            {
+                "role": "system",
+                "content": this.state.question
+            },
+            {
+                "role": "user",
+                "content": finalSummary
+            }
+            ],
+            "temperature": 0.5, // Adjust the temperature if needed
+            "max_tokens": 200, // Set the desired maximum token limit for the final summary
+        };
+
+        const responseForFinalSummary = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: 'POST',
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${apiKey}`
+            },
+            body: JSON.stringify(apiBodyForFinalSummary)
+          });
+      
+          const dataForFinalSummary = await responseForFinalSummary.json();
+          const singleSentenceSummary = dataForFinalSummary?.choices[0]?.message?.content;
+
+      this.setState({
+        fileSummarize: singleSentenceSummary,
+        loading: false,
+      });
+    } catch (error) {
+      console.error("Error calling OpenAI API:", error);
+      // Set loading to false in case of an error
+      this.setState({ loading: false });
+    }
+  };
+
+
+extractTexteIntegral = async (file) => {
+    try {
+
+        const reader = new FileReader();
+        return new Promise((resolve, reject) => {
+          reader.onload = async (e) => {
+            const text = e.target.result;
+                    
+            // Your XML document as a string
+            const xmlString = text;
+
+            // Define the regular expression pattern
+            const pattern = /<Texte_Integral>([\s\S]*?)<\/Texte_Integral>/;
+
+            // Use the regular expression to find the matching content
+            const match = xmlString.match(pattern);
+
+            // Check if a match was found
+            if (match) {
+            // Extract the content between the tags (group 1 in the match)
+            const extractedText = match[1];
+            // Remove <p> and </p> tags and get simple text
+            const simpleText = extractedText.replace(/<p>|<\/p>/g, '');
+            // Print or use the extracted text
+            console.log(simpleText);
+            resolve(simpleText);
+            } else {
+            console.log("No match found");
+            resolve(null);
+            }
+          };
+          reader.onerror = (e) => {
+            console.error("Error reading file:", e.target.error);
+            reject(e.target.error);
+          };
+          reader.readAsText(file);
+        });
+    } catch (error) {
+      console.error("Error extracting Texte_Integral:", error);
+    }
+  };
+
 resume = (file) => {
     this.setState(
       (prevState) => ({
@@ -175,7 +302,11 @@ resume = (file) => {
       () => {
         console.log(this.state.showHiddenContent); // Log the updated state here
         setTimeout(() => {
-            this.checkAi(file);
+            // this.checkAi(file);
+            console.log(file)
+            this.extractTexteIntegral(file).then((extractedText) => {
+                this.checkAi(extractedText);
+            }); // Call the extraction method
         }, 2000);
         // You can call other functions here if needed
       }
@@ -241,6 +372,11 @@ resume = (file) => {
     );
   };
 
+  changeQuestion = (e) => {
+    var value = e.target.value;
+    this.setState({question: value});
+  }
+
   checkCard = () => {
         return (
             <div id='listener' className={this.state.showHiddenContent ? 'overviewCard' : 'overviewCardHide' }>
@@ -265,6 +401,15 @@ resume = (file) => {
         </div>
         <div className="facebook-container">
           <div className="facebook-row">
+            <div style={{width : '100%'}}>
+            <input
+              placeholder="Enter your question"
+              type="text"
+              className="inputtags"
+              value={this.state.question}
+              onChange={this.changeQuestion}
+            />
+            </div>
             <input
               placeholder="press enter to add tags"
               type="text"
